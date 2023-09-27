@@ -13,6 +13,14 @@ export class User {
     @Column()
     lastName: string;
 
+    @Column({
+        unique: true
+    })
+    email: string
+
+    @Column()
+    password: string
+
     @Column({ type: 'date' })
     birthday: string;
 

@@ -9,6 +9,7 @@ import { User } from './user/entities/user.entity';
 import { Task } from './tasks/entities/task.entity';
 import { Comment } from './comments/entities/comment.entity';
 import { CommentsModule } from './comments/comments.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { CommentsModule } from './comments/comments.module';
         database: 'nest',
         entities: [User,Task,Comment],
         synchronize: true,
-      }), UserModule, TasksModule, CommentsModule],
+      }), UserModule, TasksModule, CommentsModule, AuthModule],
   controllers: [AppController,],
   providers: [AppService],
 })

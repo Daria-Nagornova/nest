@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, UsePipes} from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import {CreateUserDto, CreateUserSchema} from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiTags} from "@nestjs/swagger";
+import {JoiValidationPipe} from "../pipes/ValidationPipe";
 
 
 @ApiTags('Users')
@@ -28,6 +29,7 @@ export class UserController {
   }*/
 
   @Patch(':id')
+  @UsePipes(new JoiValidationPipe(CreateUserSchema))
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }

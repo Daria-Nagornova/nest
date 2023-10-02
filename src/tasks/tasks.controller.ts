@@ -1,11 +1,11 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, UsePipes} from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dto/create-task.dto';
+import {CreateTaskDto, CreateTaskSchema} from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import {AuthGuard} from "@nestjs/passport";
 import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { Task as taskEntity } from './entities/task.entity'
-
+import {JoiValidationPipe} from "../pipes/ValidationPipe";
 
 @ApiTags('Tasks')
 @ApiBearerAuth()
@@ -16,6 +16,7 @@ export class TasksController {
   @ApiResponse({ status: 201, description: 'Задача успешно добавлена', type: taskEntity})
   @ApiResponse({ status: 401, description: 'Неавторизовано'})
   @Post()
+  @UsePipes(new JoiValidationPipe(CreateTaskSchema))
   create(@Body() createTaskDto: CreateTaskDto) {
     return this.tasksService.create(createTaskDto);
   }
@@ -27,11 +28,12 @@ export class TasksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.tasksService.findOne(+id);
   }
 
   @Patch(':id')
+  @UsePipes(new JoiValidationPipe(CreateTaskSchema))
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.tasksService.update(+id, updateTaskDto);
   }

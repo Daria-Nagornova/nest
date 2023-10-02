@@ -15,8 +15,9 @@ export class CreateUserDto {
 }
 
 export const CreateUserSchema = Joi.object({
-    first_name: Joi.string().required(),
-    last_name: Joi.string().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
     email: Joi.string().email().required(),
-    password: Joi.string().required().min(6)
+    password: Joi.string().required().min(6),
+    birthday: Joi.string(),
 });

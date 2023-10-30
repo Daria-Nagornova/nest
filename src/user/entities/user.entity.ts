@@ -1,7 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 import { Task } from '../../tasks/entities/task.entity'
 import { Comment } from '../../comments/entities/comment.entity'
 import {ApiProperty} from "@nestjs/swagger";
+
+export enum UserRole {
+    ADMIN = 'admin',
+    USER = 'user'
+}
 
 @Entity()
 export class User {
@@ -27,9 +32,20 @@ export class User {
     @Column()
     password: string
 
+    @Column({type: 'enum', enum: UserRole, default: UserRole.USER})
+    role: UserRole;
+
     @ApiProperty()
-    @Column({ type: 'date' })
+    @Column({ type: 'date', nullable: true })
     birthday: string;
+
+    @ApiProperty()
+    @CreateDateColumn()
+    created_at: Date;
+
+    @ApiProperty()
+    @UpdateDateColumn()
+    updated_at: Date;
 
     @OneToMany(type => Task, task => task.user, {eager: true})
     tasks: Task[];

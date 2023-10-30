@@ -1,6 +1,15 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany} from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    OneToMany,
+    CreateDateColumn,
+    UpdateDateColumn
+} from 'typeorm';
 import { User } from '../../user/entities/user.entity'
 import {Comment} from "../../comments/entities/comment.entity";
+import {File} from "../../files/entities/file.entity";
 import {ApiProperty} from "@nestjs/swagger";
 
 
@@ -36,9 +45,18 @@ export class Task {
     })
     status: TaskStatus
 
+    @CreateDateColumn()
+    created_at: Date;
+
+    @UpdateDateColumn()
+    updated_at: Date;
+
     @ManyToOne(type => User, user => user.tasks)
     user: User;
 
     @OneToMany(type => Comment, comment => comment.task, {eager: true})
     comments: Comment[];
+
+    @OneToMany(type => File, file => file.task, {eager: true})
+    files: File[];
 }

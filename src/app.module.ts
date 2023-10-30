@@ -7,9 +7,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { User } from './user/entities/user.entity';
 import { Task } from './tasks/entities/task.entity';
+import { File } from './files/entities/file.entity';
 import { Comment } from './comments/entities/comment.entity';
 import { CommentsModule } from './comments/comments.module';
 import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -18,11 +20,10 @@ import { AuthModule } from './auth/auth.module';
         host: '127.0.0.1',
         port: 3306,
         username: 'root',
-        password: 'root',
         database: 'nest',
-        entities: [User,Task,Comment],
+        entities: [User,Task,Comment, File],
         synchronize: true,
-      }), UserModule, TasksModule, CommentsModule, AuthModule],
+      }), UserModule, TasksModule, CommentsModule, AuthModule, FilesModule],
   controllers: [AppController,],
   providers: [AppService],
 })

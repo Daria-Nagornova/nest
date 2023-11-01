@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, Headers} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, Headers, UseGuards} from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto, CreateCommentSchema } from './dto/create-comment.dto';
 import { UpdateCommentDto, UpdateCommentSchema } from './dto/update-comment.dto';
@@ -6,6 +6,7 @@ import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
 import {JoiValidationPipe} from "../pipes/ValidationPipe";
 import {JwtService} from "@nestjs/jwt";
 import {UserService} from "../user/user.service";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Comments')
 @ApiBearerAuth()
@@ -17,6 +18,7 @@ export class CommentsController {
       private userService: UserService
   ) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @UsePipes(new JoiValidationPipe(CreateCommentSchema))
   async create(@Headers('Authorization') auth: string, @Body() createCommentDto: CreateCommentDto) {

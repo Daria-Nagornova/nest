@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, Headers, UseGuards} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, Headers, UseGuards, Query} from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto, CreateCommentSchema } from './dto/create-comment.dto';
 import { UpdateCommentDto, UpdateCommentSchema } from './dto/update-comment.dto';
@@ -7,6 +7,9 @@ import {JoiValidationPipe} from "../pipes/ValidationPipe";
 import {JwtService} from "@nestjs/jwt";
 import {UserService} from "../user/user.service";
 import {AuthGuard} from "@nestjs/passport";
+import {PageOptionsDto} from "../paginate/page-options.dto";
+import {PageDto} from "../paginate/page.dto";
+import {CreateUserDto} from "../user/dto/create-user.dto";
 
 @ApiTags('Comments')
 @ApiBearerAuth()
@@ -32,8 +35,10 @@ export class CommentsController {
   }
 
   @Get()
-  findAll() {
-    return this.commentsService.findAll();
+  async getComments(
+      @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<PageDto<CreateCommentDto>> {
+    return this.commentsService.getComments(pageOptionsDto);
   }
 
   @Get(':id')

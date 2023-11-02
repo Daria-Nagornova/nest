@@ -1,10 +1,12 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put, UsePipes} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put, UsePipes, Query} from '@nestjs/common';
 import { UserService } from './user.service';
 import {CreateUserDto, CreateUserSchema} from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {ApiTags} from "@nestjs/swagger";
 import {JoiValidationPipe} from "../pipes/ValidationPipe";
 import {AuthGuard} from "@nestjs/passport";
+import {PageOptionsDto} from "../paginate/page-options.dto";
+import {PageDto} from "../paginate/page.dto";
 
 
 @ApiTags('Users')
@@ -38,5 +40,12 @@ export class UserController {
   @Put(':id/role')
   updateRoleOfUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.updateRoleOfUser(+id, updateUserDto);
+  }
+
+  @Get('all')
+  async getUsers(
+      @Query() pageOptionsDto: PageOptionsDto,
+  ): Promise<PageDto<CreateUserDto>> {
+    return this.userService.getUsers(pageOptionsDto);
   }
 }

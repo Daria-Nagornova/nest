@@ -10,9 +10,6 @@ export class CreateTaskDto {
 
     @ApiProperty()
     deadline: string;
-
-    @ApiProperty()
-    userId: number;
 }
 
 export const CreateTaskSchema = Joi.object({

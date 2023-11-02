@@ -4,12 +4,6 @@ import * as Joi from "joi";
 export class CreateCommentDto {
     @ApiProperty()
     text: string;
-
-    @ApiProperty()
-    userId: number;
-
-    @ApiProperty()
-    taskId: number;
 }
 
 export const CreateCommentSchema = Joi.object({

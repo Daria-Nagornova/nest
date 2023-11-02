@@ -6,12 +6,13 @@ export class CreateUserDto {
     firstName: string;
 
     @ApiProperty()
-    lastname: string;
+    lastName: string;
 
     @ApiProperty()
     email: string;
 
     password: string;
+
 }
 
 export const CreateUserSchema = Joi.object({

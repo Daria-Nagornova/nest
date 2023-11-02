@@ -24,6 +24,7 @@ import {UserService} from "../user/user.service";
 @ApiTags('Tasks')
 @ApiBearerAuth()
 @Controller('tasks')
+@UseGuards(AuthGuard('jwt'))
 export class TasksController {
   constructor(
       private readonly tasksService: TasksService,
@@ -33,7 +34,6 @@ export class TasksController {
 
   @ApiResponse({ status: 201, description: 'Задача успешно добавлена', type: taskEntity})
   @ApiResponse({ status: 401, description: 'Неавторизовано'})
-  @UseGuards(AuthGuard('jwt'))
   @Post()
   @UsePipes(new JoiValidationPipe(CreateTaskSchema))
   async create(@Headers('Authorization') auth: string, @Body() createTaskDto: CreateTaskDto) {
@@ -45,25 +45,21 @@ export class TasksController {
     return this.tasksService.create(createTaskDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   findAll() {
     return this.tasksService.findAll();
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: string) {
     return this.tasksService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.tasksService.update(+id, updateTaskDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.tasksService.remove(+id);
